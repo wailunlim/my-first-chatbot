@@ -1,6 +1,12 @@
-const express = require('express')
-const app = express()
+const express = require("express");
+const app = express();
+const ask = require("./controller").ask;
+const bodyParser = require("body-parser");
 
-app.get('/', (req, res) => res.send('Hello world!'))
+app.use(bodyParser.json());
+app.use(express.static("public"));
 
-app.listen(3000, () => console.log('Listening on port 3000'))
+app.get("/", express.static("public"));
+app.post("/ask", ask);
+
+app.listen(3000, () => console.log("Listening on port 3000"));
