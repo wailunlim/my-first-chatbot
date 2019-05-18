@@ -24,7 +24,7 @@ class App extends Component {
       .post("http://localhost:9000/ask", {
         q: newMessage
       })
-      .then(res => addResponseMessage(res.data._text))
+      .then(res => addResponseMessage(res.data.reply))
       .catch(error => console.log(error));
   };
 
