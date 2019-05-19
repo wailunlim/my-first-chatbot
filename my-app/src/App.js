@@ -34,8 +34,8 @@ class App extends Component {
         <Widget
           handleNewUserMessage={this.handleNewUserMessage}
           // profileAvatar={logo}
-          title="My new awesome title"
-          subtitle="And my cool subtitle"
+          title="bottle bot"
+          subtitle="I can tell jokes and facts!"
         />
       </div>
     );
