@@ -9,18 +9,32 @@ const getReply = require("./service").getReply;
 exports.ask = (req, res, next) => {
   return getReply(req.body)
     .then(output => {
-      connection
-        .then(() => {
+      connection.then(
+        () => {
           const db = client.db(dbName);
-          const coll = db.collection("inventory");
-          coll
-            .findOne({ intent: output.entities.intent[0].value })
-            .then(ans => {
-              res.status(200);
-              res.send(ans);
+          console.log(output);
+          if (
+            output.entities.intent === undefined ||
+            output.entities.intent[0].confidence < 0.6
+          ) {
+            res.status(200);
+            res.send({
+              reply: "Hmm, I didn't quite get that... Could you rephrase?"
             });
-        })
-        .catch(() => console.log("error!"));
+          } else {
+            const coll = db.collection(output.entities.intent[0].value);
+            coll
+              .find({})
+              .toArray()
+              .then(arr => {
+                res.status(200);
+                const index = Math.floor(Math.random() * arr.length);
+                res.send(arr[index]);
+              });
+          }
+        },
+        err => console.log(err)
+      );
       res.status(200);
     })
     .catch(next);
